@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block leftbody %}
+<div class="p-4 shadow-sm">
+    <div class="row">
+        <div class="col">
+            <h1 class="text-dark">{{ post.title }}</h1>
+        </div>
+    </div>
+    <div class="row shadow-sm">
+        <div class="col-lg-6">
+            <p>Written by <a
+                    href="{{ url_for('posts_by_user', username=post.user.username) }}">{{ post.user.username }}</a> on
+                {{ post.publish_date }}</p>
+        </div>
+        <div class="col-lg-6">
+            <p class="text-right"> Tags: {% for tag in tags %}
+                <a href="{{ url_for('posts_by_tag', tag_name=tag.title) }}">{{tag.title}}</a>
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{ post.text | safe }}
+        </div>
+    </div>
+</div>
+{% endblock %}
