@@ -1,0 +1,43 @@
+{
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pycodestyleArgs": [
+        "--max-line-length=90"
+    ],
+    "python.linting.pylintEnabled": false,
+    "python.formatting.provider": "black",
+    "python.linting.enabled": true,
+    "python.formatting.blackArgs": [
+        "--skip-string-normalization",
+    ],
+    "[python]": {
+        "editor.formatOnSave": true
+    },
+
+    "eslint.validate": [
+        "html",
+        "javascript",
+        "javascriptreact",
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+
+    "files.associations": {
+        "**/*.html": "html",
+        "**/templates/**/*.html": "django-html",
+        "**/templates/**/*": "django-txt",
+        "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+    },
+    "emmet.includeLanguages": {
+        "django-html": "html"
+    },
+    "beautify.language": {
+        "html": [
+            "htm",
+            "html",
+            "django-html"
+        ]
+    }
+    
+    
+}
