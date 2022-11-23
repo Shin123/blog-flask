@@ -1,10 +1,13 @@
 import datetime
 
-from flask import Flask, render_template
+from flask import Flask, render_template, flash, redirect, url_for
 from config import DevConfig
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, desc
 from flask_migrate import Migrate
+from flask_wtf import FlaskForm as Form
+from wtforms import StringField, TextAreaField
+from wtforms.validators import DataRequired, Length
 
 
 app = Flask(__name__)
@@ -74,6 +77,11 @@ class Comment(db.Model):
         return f'<Comment {self.text[:15]}>'
 
 
+class CommentForm(Form):
+    name = StringField('Name', validators=[DataRequired(), Length(max=255)])
+    text = TextAreaField(u'Comment', validators=[DataRequired()])
+
+
 def sidebar_data():
     recent = Post.query.order_by(Post.publish_date.desc()).limit(5).all()
     top_tags = (
@@ -100,6 +108,22 @@ def home(page=1):
 
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
 def post(post_id):
+    form = CommentForm()
+    if form.validate_on_submit():
+        new_comment = Comment()
+        new_comment.name = form.name.data
+        new_comment.text = form.text.data
+        new_comment.post_id = post_id
+        try:
+            db.session.add(new_comment)
+            db.session.commit()
+        except Exception as e:
+            flash(f'Error adding your comment: {str(e)}', 'error')
+            db.session.rollback()
+        else:
+            flash('Comment added', 'info')
+        return redirect(url_for('post', post_id=post_id))
+
     post = Post.query.get_or_404(post_id)
     tags = post.tags
     comments = post.comments.order_by(Comment.date.desc()).all()
@@ -112,6 +136,7 @@ def post(post_id):
         comments=comments,
         recent=recent,
         top_tags=top_tags,
+        form=form,
     )
 
 

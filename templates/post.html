@@ -26,4 +26,58 @@
         </div>
     </div>
 </div>
+<div class="p-4 shadow-sm">
+    <div class="row">
+        <div class="col">
+            <h4>New Comment:</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form method="POST" action="{{ url_for('post', post_id=post.id) }}">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.name.label }}
+                    {% if form.name.errors %}
+                        {% for e in form.name.errors %}
+                            <p class="help-block">{{ e }}</p>
+                        {% endfor %}
+                    {% endif %}
+                    {{ form.name(class_='form-control') }}
+                </div>
+                <div class="form-group">
+                    {{ form.text.label }}
+                    {% if form.text.errors %}
+                        {% for e in form.text.errors %}
+                            <p class="help-block">{{ e }}</p>
+                        {% endfor %}
+                    {% endif %}
+                    {{ form.text(class_='form-control') }}
+                </div>
+                <input class="btn btn-primary" type="submit" value="Add Comment">
+            </form>
+        </div>
+    </div>
+</div>
+<div class="p-4 shadow-sm">
+    <div class="row">
+        <div class="col">
+            <h4>Comments ({{ comments | length }})</h4>
+        </div>
+    </div>
+    <div class="row p-2">
+        <div class="col">
+            {% if comments | length == 0 %}
+                <p>There are no commets for this post.</p>
+            {% else %}
+                {% for comment in comments %}
+                <div class="shadow-sm p-2">
+                    <dt>By: {{ comment.name }} on {{ comment.date }}</dt>
+                    <dd>{{ comment.text }}</dd>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}
