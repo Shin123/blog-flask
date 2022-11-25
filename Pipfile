@@ -11,6 +11,7 @@ flask-migrate = "*"
 python-dotenv = "*"
 wtforms = "*"
 flask-wtf = "*"
+flask-login = "*"
 
 [dev-packages]
 black = "*"
